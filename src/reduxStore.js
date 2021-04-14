@@ -57,7 +57,6 @@ const updateData = (list, data) => {
     // here we want to update only specific user data
     const listClone = [...list];
     listClone.forEach((a, index) => {
-        console.log(a.id, data.id);
         if (a.id === data.id) {
             listClone[index] = data;
         }
@@ -77,7 +76,6 @@ const checkAndAddUserData = (list, payload) => {
 // Reducer code starts from here
 
 const reducer = (state = initialState, { type, payload }) => {
-    console.log(payload);
     switch (type) {
         case UPDATE_USER_LIST:
             return {

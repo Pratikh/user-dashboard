@@ -19,7 +19,6 @@ const Home = (props) => {
     // Load user data by calling api services
     // then show user profile.
     const loadPageData = async () => {
-        console.log(currentPageCount);
         if (!totalPages || (totalPages >= currentPageCount)) {
             dispatch(loadingUpdateAction(true));
             const loadApiResponse = await getPageData(currentPageCount);
