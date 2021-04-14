@@ -1,0 +1,13 @@
+.parentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    .inputDataFields {
+        padding:5px;
+        label {
+            padding-right: 5px;
+        }
+    }
+}
