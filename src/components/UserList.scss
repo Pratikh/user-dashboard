@@ -1,27 +1,14 @@
 .userListParent {
-    display: flex;
-    flex-flow: wrap;
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-around;
+  transition: all 0.3s;
 }
 
 .userTile {
-    width: 200px;
-    height: 300px;
-    border-style: groove;
-    border-width: 5px;
-    margin: 10px;    
-    
-    .imageContainer{
-        width: 100%;
-        display: flex;
-        justify-content: center; 
-        img {
-                    width: 90%;
-                    border-radius: 50%;
-                }
-            }
-
-            .detailsInfo{
-                padding: 5px;
-            }
+  width: 250px;
+  .my-card-image {
+    width: 218px;
+    height: 218px;
+  }
 }
-

@@ -1,4 +1,5 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import logger from 'redux-logger'
 
 // type constants
 const UPDATE_USER_LIST = 'UPDATE_USER_LIST';
@@ -10,7 +11,6 @@ const UPDATE_USER_DETAILS = 'UPDATE_USER_DETAILS';
 // initial state for components
 const initialState = {
     userList: [],
-    localAddedUser: [],
     isLoading: false,
 }
 
@@ -56,6 +56,7 @@ export const actions = { loadingUpdateAction, addUserListAction, resetUserDataAc
 const updateData = (list, data) => {
     // here we want to update only specific user data
     const listClone = [...list];
+    console.log(data);
     listClone.forEach((a, index) => {
         if (a.id === data.id) {
             listClone[index] = data;
@@ -66,10 +67,13 @@ const updateData = (list, data) => {
 
 const checkAndAddUserData = (list, payload) => {
     // This code is written to avoid duplicate data with same id 
-    const mergeData = [...list, ...payload];
-    const data = [...new Map(mergeData.map(item =>
-        [item.id, item])).values()];
-    return data;
+    const mergeData = [...list];
+    payload.forEach((a)=>{
+        mergeData.push(a);
+    })
+    // const data = [...new Map(mergeData.map(item =>
+    //     [item.id, item])).values()];
+    return mergeData;
 }
 
 
@@ -109,5 +113,5 @@ const reducer = (state = initialState, { type, payload }) => {
             return state;
     }
 }
-
-export default createStore(reducer);
+console.log(logger);
+export default createStore(reducer, applyMiddleware(logger));

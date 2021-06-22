@@ -1,10 +1,13 @@
-.userListParent {
-    display: flex;
-    flex-flow: wrap;
+.next-botton-div {
+  display: flex;
+  padding-top: 5%;
+  justify-content: flex-end;
 }
 
-.userTile {
-    width: 200px;
-    height: 300px;
+.footer-parent {
+  height: 100px;
+  background: cyan;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-

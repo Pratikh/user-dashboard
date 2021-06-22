@@ -1,0 +1,42 @@
+header {
+  height: 60px;
+  display: flex !important;
+  align-items: center;
+  background: antiquewhite;
+}
+
+.main {
+  display: flex;
+  position: absolute;
+}
+
+.sidePanel {
+  background: blueviolet;
+}
+
+.tileMainParent {
+  padding: 10px;
+  background: #737395;
+}
+
+.tilesParent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.panel {
+  width: 100px;
+  color: aliceblue;
+}
+
+.tiles {
+  width: 100px;
+  height: 100px;
+  background: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-style: double;
+  margin: 10px;
+}

@@ -1,89 +1,83 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { useState } from "react";
-import { actions } from '../reduxStore'
-import './commonFormCentering.scss';
-import { Loader } from '../components';
+import { useDispatch, useSelector } from "react-redux";
+import { useReducer, useState } from "react";
+import { actions } from "../reduxStore";
+import { uniqueId } from "lodash";
+import "./commonFormCentering.scss";
+import {
+  Loader,
+  NavigationBar,
+  ProfileColumn,
+  ProfileSetting,
+  ExperianceDetails,
+  Footer,
+} from "../components";
+// Button
 
-import { addNewUser } from '../apiServices';
+import { addNewUser } from "../apiServices";
+import { Button } from "react-bootstrap";
 const { addUserListAction, loadingUpdateAction } = actions;
-
-const AddNewUser = (props) => {
-    const dispatch = useDispatch();
-    // local state handlers for forms data.
-    const [userName, setUserName] = useState('morpheus');
-    const [lastName, setLastName] = useState('mohin');
-    const [emailId, setEmail] = useState('user@gmail.com');
-    const [job, setJob] = useState('leader');
-    const [avatar, setAvatar] = useState('https://reqres.in/img/faces/7-image.jpg');
-    const isLoading = useSelector(state => state.isLoading);
-
-    const userNameChange = ({ target: { value } }) => {
-        setUserName(value);
-    }
-
-    const LastNameChange = ({ target: { value } }) => {
-        setLastName(value);
-    }
-
-    const emaidIdChange = ({ target: { value } }) => {
-        setEmail(value);
-    }
-    
-    const jobChange = ({ target: { value } }) => {
-        setJob(value);
-    }
-
-    const avatarChange = ({ target: { value } }) => {
-        setAvatar(value);
-    }
-
-    const onSumbitData = async (event) => {
-        event.preventDefault();
-        dispatch(loadingUpdateAction(true));
-        const data =
-        {
-            first_name: userName,
-            last_name: lastName,
-            job,
-            email: emailId,
-            avatar,
-
-        }
-        const res = await addNewUser(data); // passing data to api server.
-        if (res.status === 201) { // if success then update local state user list
-            window.alert(' User added succesfully');
-            dispatch(addUserListAction([res.data]));
-        } else {
-            window.alert(' ERROR user not added');
-        }
-        dispatch(loadingUpdateAction(false));
-    }
-
-    return (
-        <div className='parentContainer'>
-            <h2> Page to add new user to database</h2>
-            <form onSubmit={onSumbitData}>
-                <div className='inputDataFields'>
-                    <input onChange={userNameChange} placeholder='User Name'></input>
-                </div>
-                <div className='inputDataFields'>
-                    <input onChange={LastNameChange} placeholder='User last name'></input>
-                </div>
-                <div className='inputDataFields'>
-                    <input onChange={emaidIdChange} placeholder=' User Emaid id'></input>
-                </div>
-                <div className='inputDataFields'>
-                    <input onChange={jobChange} placeholder='Job profile'></input>
-                </div>
-                <div className='inputDataFields'>
-                    <input onChange={avatarChange} placeholder='Profile avatar'></input>
-                </div>
-                <button disabled={isLoading} onClick={onSumbitData}>Submit</button>
-            </form>
-            <Loader />
-        </div>
-    )
-
+function reducer(state, action) {
+  switch (action.type) {
+    case "UPDATE":
+      return {
+        ...state,
+        [action.key]: action.value,
+      };
+    default:
+      return state;
+  }
 }
+const AddNewUser = (props) => {
+  const initialState = {
+    id: uniqueId(),
+    totalExperiance: 2,
+    country: "",
+    state: "",
+    address: "",
+    phoneNumber: "",
+    education: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+  };
+  const [state, localDispatcher] = useReducer(reducer, initialState);
+  const dispatch = useDispatch();
+
+  const onSumbitData = async (event) => {
+    event.preventDefault();
+    dispatch(loadingUpdateAction(true));
+    console.log(state);
+    const res = await addNewUser(state); // passing data to api server.
+    console.log(res.status);
+    if (res.status === 201) {
+      // if success then update local state user list
+      // window.alert(" User added succesfully");
+      dispatch(addUserListAction([res.data]));
+    } else {
+      window.alert(" ERROR user not added");
+    }
+    dispatch(loadingUpdateAction(false));
+  };
+  const userDetails = {
+    avatar:
+      "https://res.cloudinary.com/djcffe77b/image/upload/v1623929527/user-database/avatar-1577909_wweb8h.svg",
+  };
+
+  return (
+    <div>
+      <NavigationBar />
+      <form className="row m-5 bg-white rounded">
+        <ProfileColumn {...userDetails} localDispatcher={localDispatcher} />
+        <ProfileSetting {...state} localDispatcher={localDispatcher} />
+        <ExperianceDetails {...state} localDispatcher={localDispatcher} />
+        <Button variant="outline-primary" type="submit" onClick={onSumbitData}>
+          Save Profile
+        </Button>
+      </form>
+      <Loader />
+      <Footer />
+    </div>
+  );
+};
 
 export default AddNewUser;

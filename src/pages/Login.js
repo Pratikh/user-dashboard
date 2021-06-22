@@ -1,65 +1,90 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { useState } from "react"
-import { loginService } from '../apiServices';
-import auth from '../auth'
-import './commonFormCentering.scss'
-import { actions } from '../reduxStore'
-import { Loader } from '../components'
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { loginService } from "../apiServices";
+import auth from "../auth";
+import "./commonFormCentering.scss";
+import { actions } from "../reduxStore";
+import { Loader } from "../components";
+import { Form, Button } from "react-bootstrap";
 
 const { loadingUpdateAction } = actions;
 
 const LoginPage = (props) => {
-    const dispatch = useDispatch();
-    
-    const isLoading = useSelector(state => state.isLoading);
-    const [userName, setUserName] = useState('eve.holt@reqres.in');// set user login creds for testing, remove this in production
-    const [password, setPassword] = useState('cityslicka');
+  const dispatch = useDispatch();
 
-    const userNameInput = ({ target: { value } }) => {
-        setUserName(value);
+  const isLoading = useSelector((state) => state.isLoading);
+  const [userName, setUserName] = useState("eve.holt@reqres.in"); // set user login creds for testing, remove this in production
+  const [password, setPassword] = useState("cityslicka");
+
+  const userNameInput = ({ target: { value } }) => {
+    setUserName(value);
+  };
+
+  const passwordInput = ({ target: { value } }) => {
+    setPassword(value);
+  };
+
+  const onSubmitData = async (event) => {
+    event.preventDefault();
+    dispatch(loadingUpdateAction(true));
+    const res = await loginService({
+      url: "login",
+      data: { email: userName, password },
+    });
+    if (res.status === 200) {
+      // on success goto home page.
+      auth.logIn(() => props.history.push("/home"));
+    } else if (res.data.error) {
+      window.alert(res.data.error);
     }
+    dispatch(loadingUpdateAction(false));
+  };
 
-    const passwordInput = ({ target: { value } }) => {
-        setPassword(value);
-    }
+  const gotoSignupPage = () => {
+    props.history.push("/signup");
+  };
 
-    const onSubmitData = async (event) => {
-        event.preventDefault();
-        dispatch(loadingUpdateAction(true))
-        const res = await loginService({ url: 'login', data: { email: userName, password } });
-        if (res.status === 200) {// on success goto home page.
-            auth.logIn(() => props.history.push('/home'));
-        } else if (res.data.error) {
-            window.alert(res.data.error);
-        }
-        dispatch(loadingUpdateAction(false));
-    }
+  console.log(isLoading);
+  return (
+    <div className="parentContainer mt-5">
+      <Form onSubmit={onSubmitData} className="container-fluid">
+        <h3> Sign in </h3>
+        <Form.Group controlId="formBasicEmail">
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            onChange={userNameInput}
+          />
+        </Form.Group>
 
-    const gotoSignupPage = () => {
-        props.history.push('/signup')
-    }
+        <Form.Group controlId="formBasicPassword">
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            onChange={passwordInput}
+          />
+        </Form.Group>
+        <Button
+          variant="btn btn-primary btn-block"
+          type="submit"
+          disabled={isLoading}
+        >
+          Submit
+        </Button>
+        <Form.Group className="m-2 t-2">
+          <Form.Label>Do you want to</Form.Label>
+          <Button
+            onClick={gotoSignupPage}
+            variant="secondary"
+            disabled={isLoading}
+          >
+            Sign up
+          </Button>
+        </Form.Group>
+      </Form>
+      <Loader />
+    </div>
+  );
+};
 
-    return (
-        <div className='parentContainer'>
-            <div>
-                <h2> Login page for registered user</h2>
-            </div>
-            <form onSubmit={onSubmitData}>
-                <div className='inputDataFields'>
-                    <input onChange={userNameInput} placeholder='Eenter username'></input>
-                </div>
-                <div className='inputDataFields'>
-                    <input type='password' onChange={passwordInput} placeholder='Eenter password'></input>
-                </div >
-                <button disabled={isLoading} onClick={onSubmitData}> Login </button>
-            </form>
-            <div className='inputDataFields'>
-                <span> If you are not registere then please go to </span>
-                <button disabled={isLoading} onClick={gotoSignupPage} > SignUp </button>
-            </div>
-            <Loader />
-        </div>
-    )
-}
-
-export default LoginPage
+export default LoginPage;

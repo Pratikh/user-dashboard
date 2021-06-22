@@ -1,31 +1,31 @@
-
 nav {
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  background-color: beige;
+  background-color: rgba(235, 241, 246, 0.671);
 }
 
 .navigationBar {
-    margin: 0px;
-   display: flex;
-   list-style: none;
-   background-color: beige;
-   list-style: none;
-   flex-direction: column;
+  margin: 0px;
+  display: flex;
+  list-style: none;
+  flex-direction: column;
 
-   a {
-     transition: background-color 0.5s ease;
-     padding: 10px;
-     cursor: pointer;
-     &:hover{
-       background-color: bisque;
-     }
-     text-decoration: none;
-   }
+  a {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+    transition: all 0.3s;
+    &:hover {
+      background-color: rgb(102, 165, 65);
+      text-decoration: none;
+      color: aliceblue;
+    }
+  }
 
-
-   @media (min-width: 768px) {
-     flex-direction: row;
+  @media (min-width: 768px) {
+    transition: all 0.3s;
+    flex-direction: row;
   }
 }

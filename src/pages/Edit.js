@@ -1,91 +1,106 @@
-import { useSelector } from "react-redux";
-import { useDispatch } from 'react-redux'
-import { useState } from "react";
-import { actions } from '../reduxStore'
-import { addNewUser } from '../apiServices';
-import { Loader } from '../components'
-import './commonFormCentering.scss'
+import { useSelector, useDispatch } from "react-redux";
+import { useReducer, useState } from "react";
+import { actions } from "../reduxStore";
+import { addNewUser } from "../apiServices";
+import {
+  Loader,
+  NavigationBar,
+  ProfileColumn,
+  ProfileSetting,
+  ExperianceDetails,
+  MyCustomToast,
+  Footer
+} from "../components";
+import "./commonFormCentering.scss";
+import { Button, Container, Form } from "react-bootstrap";
 
-const { updateUserAction, loadingUpdateAction } = actions;
+function reducer(state, action) {
+  switch (action.type) {
+    case "UPDATE":
+      return {
+        ...state,
+        [action.key]: action.value,
+      };
+    default:
+      return state;
+  }
+}
 
-const Edit = (props) => {
-    const id = +props.match.params.id;
-    
-    const dispatch = useDispatch();
-    const userList = useSelector(state => state.userList);
-    const isLoading = useSelector(state => state.isLoading);
-    // get user detail byt there ID
-    const { first_name = 'null', last_name = 'null', email = 'null', avatar = 'null' } = userList.filter(user => +user.id === id)[0];
+const { updateUserAction, loadingUpdateAction, deleteUserAction } = actions;
 
-    const [userName, setUserName] = useState(first_name);
-    const [lastName, setLastName] = useState(last_name);
-    const [emailId, setEmail] = useState(email);
-    const [profilAvatar, setAvatar] = useState(avatar);
+function Edit(props) {
+  const id = props.match.params.id;
+  const [showToast, setShowToast] = useState(false);
+  const [showToastMsg, setShowToastMsg] = useState("");
 
-    const userNameChange = ({ target: { value } }) => {
-        setUserName(value);
+  const dispatch = useDispatch();
+  const userList = useSelector((state) => state.userList);
+  window.userList = userList;
+  // get user detail byt there ID
+  const userDetails = userList.find(({ id: userId }) => +id === +userId);
+  console.log("userDetails", userDetails);
+  const initialState = {
+    totalExperiance: 2,
+    country: "India",
+    state: "Maharashtra",
+    address: "Wadgaon sheri, Pune 411014",
+    phoneNumber: "9763225511",
+    education: "BE in Computer",
+    ...userDetails,
+  };
+  const [state, localDispatcher] = useReducer(reducer, initialState);
+
+  function deleteUser(id) {
+    dispatch(deleteUserAction(+id));
+    props.history.push("/home");
+  }
+
+  const onSumbitData = async (event) => {
+    event.preventDefault();
+    dispatch(loadingUpdateAction(true));
+
+    const res = await addNewUser(state);
+    if (res.status === 201) {
+      // on success update perticular user data.
+      console.log(" User added succesfully");
+      dispatch(updateUserAction(state));
+      console.log(res);
+      setShowToastMsg("User data updated succesfully");
+      setShowToast(true);
     }
-
-    const LastNameChange = ({ target: { value } }) => {
-        setLastName(value);
+    if (res.data.error) {
+      console.log(" ERROR user not added " + res.data.error);
+      setShowToastMsg(`Got error: ${res.data.error}`);
     }
+    dispatch(loadingUpdateAction(false));
+  };
 
-    const emaidIdChange = ({ target: { value } }) => {
-        setEmail(value);
-    }
+  return (
+    <div>
+      <MyCustomToast {...{ showToastMsg, showToast, setShowToast }} />
 
-    const avatarChange = ({ target: { value } }) => {
-        setAvatar(value);
-    }
-
-    const onSumbitData = async (event) => {
-        event.preventDefault();
-        dispatch(loadingUpdateAction(true));
-        const data = { // preparing data to pass api server.
-            id,
-            first_name: userName || first_name,
-            last_name: lastName || last_name,
-            email: emailId || email,
-            avatar: profilAvatar || avatar,
-        }
-
-        const res = await addNewUser(data);
-        if (res.status === 201) { // on success update perticular user data.
-            window.alert(' User added succesfully');
-            dispatch(updateUserAction(data));
-        } if (res.data.error) {
-            window.alert(' ERROR user not added ' + res.data.error);
-        }
-        dispatch(loadingUpdateAction(false));
-    }
-
-    return (
-        <div>
-            <h2> Please fill below user data</h2>
-            <div className='parentContainer'>
-                <form onSubmit={onSumbitData}>
-                    <div className='inputDataFields'>
-                        <label> User first name</label>
-                        <input onChange={userNameChange} placeholder={first_name}></input>
-                    </div>
-                    <div className='inputDataFields'>
-                        <label> User last name</label>
-                        <input onChange={LastNameChange} placeholder={last_name}></input>
-                    </div>
-                    <div className='inputDataFields'>
-                        <label> User Emaid id</label>
-                        <input onChange={emaidIdChange} placeholder={email}></input>
-                    </div>
-                    <div className='inputDataFields'>
-                        <label> Profile avatar </label>
-                        <input onChange={avatarChange} placeholder={avatar}></input>
-                    </div>
-                    <button disabled={isLoading} onClick={onSumbitData}>Submit changes</button>
-                </form>
-            </div>
-            <Loader />
-        </div>
-    )
+      <NavigationBar />
+      <Container className="rounded bg-white mt-5 mb-5">
+        <Form className="row" onSubmit={onSumbitData} disabled={false}>
+          <ProfileColumn {...userDetails} localDispatcher={localDispatcher} />
+          <ProfileSetting {...state} localDispatcher={localDispatcher} />
+          <ExperianceDetails {...state} localDispatcher={localDispatcher} />
+          <Button
+            variant="outline-primary"
+            type="submit"
+            onClick={onSumbitData}
+          >
+            Save Profile
+          </Button>
+          <Button variant="outline-danger" onClick={deleteUser.bind({}, id)}>
+            Delete Profile
+          </Button>
+        </Form>
+      </Container>
+      <Loader />
+      <Footer />
+    </div>
+  );
 }
 
 export default Edit;

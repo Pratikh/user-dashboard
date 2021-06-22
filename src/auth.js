@@ -1,7 +1,7 @@
 // This class is singleton to handle login/logout tracking.
 class Authentication {
     constructor() {
-        this.isAuthenticated = false;
+        this.isAuthenticated = true;
     }
 
     logIn(callback) {

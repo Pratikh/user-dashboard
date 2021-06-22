@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -7,7 +6,7 @@ import {
 import { Provider } from "react-redux";
 
 import store from './reduxStore'
-import { Home, Login, SignUp, AddNewUser, Edit, Search } from './pages';
+import { Home, Login, SignUp, AddNewUser, Edit, Search, Test } from './pages';
 import { ProtectedRouting } from './components'
 
 export default function AuthExample() {
@@ -17,6 +16,7 @@ export default function AuthExample() {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/test" component={Test} />
           <ProtectedRouting exact path="/home" component={Home} />
           <ProtectedRouting exact path="/addNewUser" component={AddNewUser} />
           <ProtectedRouting exact path="/search" component={Search} />

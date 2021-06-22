@@ -1,13 +1,29 @@
 .parentContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    
-    .inputDataFields {
-        padding:5px;
-        label {
-            padding-right: 5px;
-        }
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+  margin: auto;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 15px;
+  transition: all 0.3s;
+
+  h3 {
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 15px;
+    transition: all 0.3s;
+  }
 }
+
+.ursor-pointer {
+  cursor: pointer;
+}
+
+
