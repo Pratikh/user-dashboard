@@ -7,35 +7,37 @@ import { Button } from "react-bootstrap";
 import "./Home.scss";
 
 const { loadingUpdateAction, addUserListAction } = actions;
-
+let currentPage = 0;
+let totalPages = 900;
 function useUserDataLoader() {
-  const [isAllPagesLoaded, setIsAllPagesLoaded] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [totalPages, setTotalPages] = useState(999);
 
   const dispatch = useDispatch();
+
   async function loadData() {
     dispatch(loadingUpdateAction(true));
     try {
-      const loadApiResponse = await getPageData(currentPage);
+      const loadApiResponse = await getPageData(currentPage+1);
       dispatch(addUserListAction(loadApiResponse.data.data));
-      setIsAllPagesLoaded(
-        loadApiResponse.data.page === loadApiResponse.data.total_pages
-      ); // all page loaded flag
+      totalPages = loadApiResponse.data.total_pages;
+      currentPage = loadApiResponse.data.page;
+      console.log(currentPage === totalPages);
     } catch (error) {
       window.alert("GOT ERROR");
     } finally {
       dispatch(loadingUpdateAction(false));
-      setCurrentPage(currentPage + 1); // next page incriment
     }
   }
 
-  return [isAllPagesLoaded, loadData];
+  return loadData;
 }
 
 function Home() {
-  const [isAllPagesLoaded, loadData] = useUserDataLoader();
+  const loadData = useUserDataLoader();
   const { userList, isLoading } = useSelector((store) => store);
-
+  const isAllPagesLoaded = currentPage === totalPages;
+  console.log(isAllPagesLoaded,currentPage, totalPages,);
   useEffect(() => {
     // On mount try to load data
     if (userList.length === 0) {
