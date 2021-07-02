@@ -113,5 +113,4 @@ const reducer = (state = initialState, { type, payload }) => {
             return state;
     }
 }
-console.log(logger);
 export default createStore(reducer, applyMiddleware(logger));

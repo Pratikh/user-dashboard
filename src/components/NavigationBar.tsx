@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 
 function NavigationBar() {
   return (
-    <nav>
+    <nav className="my-nav">
+      <h4>MY logo</h4>
       <ul className="navigationBar">
         <NavLink to="/home">Home</NavLink>
         <NavLink to="/addNewUser">AddNewUser</NavLink>

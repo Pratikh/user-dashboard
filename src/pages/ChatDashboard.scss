@@ -1,0 +1,133 @@
+body #root {
+  height: 100%;
+}
+
+// * {
+//   text-decoration: none;
+// }
+
+.menu-panel {
+  font-size: 16px;
+  font-weight: bold;
+  a {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.chat-profile-img {
+  width: 50px;
+  height: 50px;
+}
+
+.single-chat-profile-img {
+  width: 35px;
+  height: 35px;
+  background: #ffffff;
+}
+
+.top-attachement-btns {
+  width: 15%;
+  svg {
+    color: #707c97;
+  }
+}
+
+.new-chat-button {
+  background-image: linear-gradient(to right, #62abf9, #0a7ffa);
+}
+
+.other-user-msg {
+  background-color: #60a9f6;
+  color: white;
+  border-radius: 0px 8px 8px 8px;
+  max-width: 75%;
+}
+
+.current-user-msg {
+  color: black;
+  border-radius: 8px 8px 0px 8px;
+  max-width: 75%;
+}
+
+%message-panel-blue-icons {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2a8bf2;
+  color: #ffffff;
+}
+
+%message-panel-blue-icons-rotate {
+  transform: rotate(331deg);
+}
+
+.bottom-message-panel {
+  position: relative;
+  .add-more-hover-container {
+    position: absolute;
+    bottom: 35px;
+    left: -3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transform-origin: top center;
+    svg {
+      font-size: x-large;
+      color: #ffffff;
+    }
+    .add-hidden-icons {
+      width: 40px;
+      height: 40px;
+      background-color: #2a8bf2;
+
+      .icon {
+        transition: all 0.2s;
+        transform: translateZ(0);
+        opacity: 0;
+      }
+    }
+  }
+  .emoji-icon {
+    color: #707c97;
+    cursor: pointer;
+  }
+  .send-button {
+    transform: rotate(331deg);
+    cursor: pointer;
+    @extend %message-panel-blue-icons;
+  }
+
+  .add-button {
+    cursor: pointer;
+    @extend %message-panel-blue-icons;
+  }
+}
+
+.chat-container {
+  box-shadow: 0px 15px 10px -15px #d4d1d1;
+  .last-online {
+    color: #2a8bf2;
+  }
+  .msg-time {
+    color: #707c97;
+  }
+  .chat-message-in-short {
+    color: rgb(112, 124, 151);
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &:hover {
+    background: #7cb8f7;
+    transition: all 0.2s;
+    .last-online,
+    .msg-time,
+    .chat-message-in-short {
+      color: white;
+    }
+  }
+}

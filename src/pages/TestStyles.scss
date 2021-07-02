@@ -7,7 +7,6 @@ header {
 
 .main {
   display: flex;
-  position: absolute;
 }
 
 .sidePanel {
@@ -39,4 +38,20 @@ header {
   align-items: center;
   border-style: double;
   margin: 10px;
+}
+
+.footerParent {
+  display: flex;
+  .first {
+    background: violet;
+  }
+  .second {
+    background: rgb(216, 184, 188);
+
+  }
+
+  .third {
+    background: rgb(184, 56, 25);
+
+  }
 }

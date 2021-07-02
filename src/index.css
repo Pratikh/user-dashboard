@@ -7,12 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: darkgray;
   background: #e2e6e9 !important;
-  /* width: 100%; */
-  height: 100%;
-  /* margin: 0; */
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -21,19 +19,24 @@ code {
     monospace;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* a:hover {
-  color: #0056b3;
-  text-decoration: none;
-} */
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b7bdcb;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b7bdcb;
+  border-radius: 10px;
+}

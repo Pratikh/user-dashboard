@@ -26,10 +26,10 @@ function UserList({ userList }: props) {
   return userList.map((user: UserListInterface) => {
     return (
       <Card key={user.id} className="m-2 userTile">
-        <Container>
+        <Container className='image-container'>
           <Card.Img className="top my-card-image" src={user.avatar} />
         </Container>
-        <Card.Body >
+        <Card.Body className='my-card-body'>
           <Card.Title>{user.first_name}</Card.Title>
           <Card.Text>
             <span>Email :</span> {user.email}

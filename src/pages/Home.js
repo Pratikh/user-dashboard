@@ -18,7 +18,7 @@ function useUserDataLoader() {
   async function loadData() {
     dispatch(loadingUpdateAction(true));
     try {
-      const loadApiResponse = await getPageData(currentPage+1);
+      const loadApiResponse = await getPageData(currentPage + 1);
       dispatch(addUserListAction(loadApiResponse.data.data));
       totalPages = loadApiResponse.data.total_pages;
       currentPage = loadApiResponse.data.page;
@@ -37,7 +37,7 @@ function Home() {
   const loadData = useUserDataLoader();
   const { userList, isLoading } = useSelector((store) => store);
   const isAllPagesLoaded = currentPage === totalPages;
-  console.log(isAllPagesLoaded,currentPage, totalPages,);
+  console.log(isAllPagesLoaded, currentPage, totalPages);
   useEffect(() => {
     // On mount try to load data
     if (userList.length === 0) {
@@ -48,18 +48,24 @@ function Home() {
   }, []);
 
   return (
-    <div>
-      <Loader />
-      <NavigationBar />
-      <section className="userListParent">
-        <UserList userList={userList} />
-      </section>
-      <div className="next-botton-div">
-        {!isLoading && (
-          <Button disabled={isAllPagesLoaded} onClick={loadData}>
-            Next page
-          </Button>
-        )}
+    <div
+      // style={{
+      //   position: "relative",
+      // }}
+    >
+      <div className="contentWrapper">
+        <Loader />
+        <NavigationBar />
+        <section className="userListParent">
+          <UserList userList={userList} />
+        </section>
+        <div className="next-botton-div">
+          {!isLoading && (
+            <Button disabled={isAllPagesLoaded} onClick={loadData}>
+              Next page
+            </Button>
+          )}
+        </div>
       </div>
       <Footer />
     </div>
